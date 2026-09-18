@@ -2,7 +2,7 @@
 
 # Example: Move the turtle forward a set distance, then stop.
 # To start this node open a new terminal and run:
-#   python3 move_turtle.py
+#   python3 example.py
 # Make sure turtlesim is running first though!!!
 
 import time
