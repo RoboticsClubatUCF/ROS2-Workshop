@@ -1,0 +1,20 @@
+{
+  "name": "ros2-workshop-1",
+  "build": {
+    "dockerfile": "./Dockerfile",
+    "context": "./",
+  },
+  "forwardPorts": [6080],
+  "portsAttributes": {
+    "6080": { "label": "desktop (noVNC)", "onAutoForward": "openPreview" }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools",
+        "ms-python.python",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  },
+}
