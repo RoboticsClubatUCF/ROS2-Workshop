@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
 # Example: Move the turtle forward a set distance, then stop.
+# To start this node open a new terminal and run:
+#   python3 move_turtle.py
+# Make sure turtlesim is running first though!!!
 
 import time
 import rclpy
@@ -31,21 +34,17 @@ def move_turtle(linear_speed, distance):
     pub.publish(move_cmd)
     node.get_logger().info("Turtle has stopped moving.")
 
-    # Shut down cleanly
-    node.destroy_node()
-    rclpy.shutdown()
-
 
 if __name__ == '__main__':
+    # Start ROS 2 and create our node
+    rclpy.init()
+    node = rclpy.create_node('move_turtle_node')
+
+    # Publisher: send Twist messages on the /turtle1/cmd_vel topic.
+    # Arguments are (message type, topic name, queue size).
+    pub = node.create_publisher(Twist, '/turtle1/cmd_vel', 10)
+
     try:
-        # Start ROS 2 and create our node
-        rclpy.init()
-        node = rclpy.create_node('move_turtle_node')
-
-        # Publisher: send Twist messages on the /turtle1/cmd_vel topic.
-        # Arguments are (message type, topic name, queue size).
-        pub = node.create_publisher(Twist, '/turtle1/cmd_vel', 10)
-
         # Set your linear speed and distance
         linear_speed = 0.2  # In meters per sec
         distance = 1.0      # In meters
@@ -58,3 +57,7 @@ if __name__ == '__main__':
         rclpy.shutdown()
     except KeyboardInterrupt:
         pass
+    finally:
+        # Shut down cleanly
+        node.destroy_node()
+        rclpy.shutdown()
