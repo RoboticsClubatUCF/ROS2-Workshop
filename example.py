@@ -52,9 +52,6 @@ if __name__ == '__main__':
         # Call the move turtle function made above
         move_turtle(linear_speed, distance)
 
-        # Shut down cleanly
-        node.destroy_node()
-        rclpy.shutdown()
     except KeyboardInterrupt:
         pass
     finally:
