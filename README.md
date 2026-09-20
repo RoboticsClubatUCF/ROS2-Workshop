@@ -1,3 +1,4 @@
+# Workshop 1
 ## Getting Started
 
 To start using this environment:
