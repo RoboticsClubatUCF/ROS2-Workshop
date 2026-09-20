@@ -6,7 +6,8 @@
   },
   "forwardPorts": [6080],
   "portsAttributes": {
-    "6080": { "label": "desktop (noVNC)", "onAutoForward": "openPreview" }
+    "6080": { "label": "desktop (noVNC)", "onAutoForward": "openPreview" },
+    "5900": { "label": "vnc (internal)", "onAutoForward": "ignore" }
   },
   "customizations": {
     "vscode": {
