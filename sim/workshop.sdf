@@ -1,0 +1,172 @@
+<?xml version="1.0" ?>
+<!--
+  Workshop 2 world: flat ground + one small differential-drive robot.
+  No sensors, so it stays light in a codespace.
+  Gazebo side: the DiffDrive plugin listens on /cmd_vel and publishes /odom.
+  (sim.launch.py bridges both to ROS 2.)
+-->
+<sdf version="1.8">
+  <world name="workshop">
+
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <plugin filename="ignition-gazebo-physics-system" name="ignition::gazebo::systems::Physics"/>
+    <plugin filename="ignition-gazebo-user-commands-system" name="ignition::gazebo::systems::UserCommands"/>
+    <plugin filename="ignition-gazebo-scene-broadcaster-system" name="ignition::gazebo::systems::SceneBroadcaster"/>
+
+    <light type="directional" name="sun">
+      <cast_shadows>false</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><plane><normal>0 0 1</normal><size>20 20</size></plane></geometry>
+          <material>
+            <ambient>0.7 0.7 0.7 1</ambient>
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="robot">
+      <pose>0 0 0 0 0 0</pose>
+
+      <link name="chassis">
+        <pose>0 0 0.07 0 0 0</pose>
+        <inertial>
+          <mass>2.0</mass>
+          <inertia>
+            <ixx>0.0115</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.0161</iyy><iyz>0</iyz>
+            <izz>0.0254</izz>
+          </inertia>
+        </inertial>
+        <visual name="visual">
+          <geometry><box><size>0.30 0.25 0.08</size></box></geometry>
+          <material>
+            <ambient>0.1 0.3 0.8 1</ambient>
+            <diffuse>0.1 0.3 0.8 1</diffuse>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><box><size>0.30 0.25 0.08</size></box></geometry>
+        </collision>
+      </link>
+
+      <link name="left_wheel">
+        <pose>0 0.14 0.05 -1.5707 0 0</pose>
+        <inertial>
+          <mass>0.2</mass>
+          <inertia>
+            <ixx>0.00014</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.00014</iyy><iyz>0</iyz>
+            <izz>0.00025</izz>
+          </inertia>
+        </inertial>
+        <visual name="visual">
+          <geometry><cylinder><radius>0.05</radius><length>0.03</length></cylinder></geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1</ambient>
+            <diffuse>0.1 0.1 0.1 1</diffuse>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><cylinder><radius>0.05</radius><length>0.03</length></cylinder></geometry>
+        </collision>
+      </link>
+
+      <link name="right_wheel">
+        <pose>0 -0.14 0.05 -1.5707 0 0</pose>
+        <inertial>
+          <mass>0.2</mass>
+          <inertia>
+            <ixx>0.00014</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.00014</iyy><iyz>0</iyz>
+            <izz>0.00025</izz>
+          </inertia>
+        </inertial>
+        <visual name="visual">
+          <geometry><cylinder><radius>0.05</radius><length>0.03</length></cylinder></geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1</ambient>
+            <diffuse>0.1 0.1 0.1 1</diffuse>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><cylinder><radius>0.05</radius><length>0.03</length></cylinder></geometry>
+        </collision>
+      </link>
+
+      <!-- Frictionless ball in front so the robot doesn't tip -->
+      <link name="caster">
+        <pose>0.11 0 0.025 0 0 0</pose>
+        <inertial>
+          <mass>0.1</mass>
+          <inertia>
+            <ixx>0.000025</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.000025</iyy><iyz>0</iyz>
+            <izz>0.000025</izz>
+          </inertia>
+        </inertial>
+        <visual name="visual">
+          <geometry><sphere><radius>0.025</radius></sphere></geometry>
+        </visual>
+        <collision name="collision">
+          <geometry><sphere><radius>0.025</radius></sphere></geometry>
+          <surface>
+            <friction><ode><mu>0</mu><mu2>0</mu2></ode></friction>
+          </surface>
+        </collision>
+      </link>
+
+      <joint name="left_wheel_joint" type="revolute">
+        <parent>chassis</parent>
+        <child>left_wheel</child>
+        <axis>
+          <xyz expressed_in="__model__">0 1 0</xyz>
+          <limit><lower>-1.79769e+308</lower><upper>1.79769e+308</upper></limit>
+        </axis>
+      </joint>
+
+      <joint name="right_wheel_joint" type="revolute">
+        <parent>chassis</parent>
+        <child>right_wheel</child>
+        <axis>
+          <xyz expressed_in="__model__">0 1 0</xyz>
+          <limit><lower>-1.79769e+308</lower><upper>1.79769e+308</upper></limit>
+        </axis>
+      </joint>
+
+      <joint name="caster_joint" type="ball">
+        <parent>chassis</parent>
+        <child>caster</child>
+      </joint>
+
+      <plugin filename="ignition-gazebo-diff-drive-system" name="ignition::gazebo::systems::DiffDrive">
+        <left_joint>left_wheel_joint</left_joint>
+        <right_joint>right_wheel_joint</right_joint>
+        <wheel_separation>0.28</wheel_separation>
+        <wheel_radius>0.05</wheel_radius>
+        <topic>/cmd_vel</topic>
+        <odom_topic>/odom</odom_topic>
+        <odom_publish_frequency>20</odom_publish_frequency>
+        <frame_id>odom</frame_id>
+        <child_frame_id>base_link</child_frame_id>
+      </plugin>
+    </model>
+
+  </world>
+</sdf>
