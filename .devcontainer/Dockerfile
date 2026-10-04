@@ -1,8 +1,18 @@
 FROM ros:humble-ros-base
 
-#Install all require packages for workshop 1
+# Add the (OSRF) Gazebo apt repo
+RUN apt-get update && apt-get install -y curl && \
+    curl -sSL https://packages.osrfoundation.org/gazebo.gpg \
+        -o /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable jammy main" \
+        > /etc/apt/sources.list.d/gazebo-stable.list && \
+    rm -rf /var/lib/apt/lists/*
+
+#Install all require packages for workshop 2
 RUN apt-get update && apt-get install -y \
     ros-humble-turtlesim \
+    ignition-fortress \
+    ros-humble-ros-gz-bridge \
     python3-colcon-common-extensions \
     xvfb fluxbox x11vnc websockify git && \
     rm -rf /var/lib/apt/lists/*

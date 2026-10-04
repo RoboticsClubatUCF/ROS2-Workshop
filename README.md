@@ -1,3 +1,4 @@
+# Workshop 2
 ## Getting Started
 
 To start using this environment:
@@ -34,3 +35,23 @@ When the browser tab opens, select vnc.html
 Click Connect (no password is required).
 
 You should now see the graphical desktop where you can run tools like RViz or Gazebo.
+
+---
+## Starting Gazebo with Turtlebot4
+### 1. Launch
+Open a terminal in your Codespace and run:
+
+```bash
+ros2 launch sim/sim.launch.py
+```
+
+### 2. Check active topics
+Open a new terminal in your Codespace and run:
+```bash
+ros2 topic list
+```
+
+To display the messages on a topic (e.g. /cmd_vel) run
+```bash
+ros2 topic info /cmd_vel --verbose
+```
