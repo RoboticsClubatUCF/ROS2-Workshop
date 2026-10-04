@@ -6,7 +6,7 @@ To start using this environment:
 1. Navigate to the GitHub repository
 2. Click on the "Code" button
 3. Select the "Codespaces" tab
-4. Click "Create codespace on Workshop-1"
+4. Click "Create codespace on Workshop-2"
 
 This will launch a cloud-based development environment with VS Code in your browser, complete with ROS2 Humble already installed and configured.
 
